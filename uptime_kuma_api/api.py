@@ -696,6 +696,7 @@ class UptimeKumaApi(object):
             upsideDown: bool = False,
             notificationIDList: list = None,
             httpBodyEncoding: str = "json",
+            monitorGroupSelector: int = None,
 
             # HTTP, KEYWORD, JSON_QUERY, REAL_BROWSER
             url: str = None,
@@ -809,6 +810,7 @@ class UptimeKumaApi(object):
             "resendInterval": resendInterval,
             "description": description,
             "httpBodyEncoding": httpBodyEncoding,
+            "monitorGroupSelector": monitorGroupSelector,
         }
 
         if parse_version(self.version) >= parse_version("1.22"):
