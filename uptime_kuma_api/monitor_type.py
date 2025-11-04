@@ -69,3 +69,6 @@ class MonitorType(str, Enum):
 
     TAILSCALE_PING = "tailscale-ping"
     """Tailscale Ping"""
+
+    SMTP = "smtp"
+    """SMTP"""

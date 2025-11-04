@@ -283,6 +283,7 @@ def _check_arguments_monitor(kwargs) -> None:
         MonitorType.REAL_BROWSER: ["url"],
         MonitorType.KAFKA_PRODUCER: ["kafkaProducerTopic", "kafkaProducerMessage"],
         MonitorType.TAILSCALE_PING: ["hostname"],
+        MonitorType.SMTP: ["smtp_security"]
     }
     type_ = kwargs["type"]
     required_args = required_args_by_type[type_]
@@ -745,7 +746,7 @@ class UptimeKumaApi(object):
             # PING
             packetSize: int = 56,
 
-            # PORT, DNS, STEAM, MQTT, RADIUS
+            # PORT, DNS, STEAM, MQTT, RADIUS, SMTP
             port: int = None,
 
             # DNS
@@ -791,6 +792,10 @@ class UptimeKumaApi(object):
             kafkaProducerSsl: bool = False,
             kafkaProducerAllowAutoTopicCreation: bool = False,
             kafkaProducerSaslOptions: dict = None,
+
+            # SMTP
+            smtpSecurity: str = None
+
     ) -> dict:
         if accepted_statuscodes is None:
             accepted_statuscodes = ["200-299"]
@@ -901,7 +906,7 @@ class UptimeKumaApi(object):
             "packetSize": packetSize,
         })
 
-        # PORT, DNS, STEAM, MQTT, RADIUS
+        # PORT, DNS, STEAM, MQTT, RADIUS, SMTP
         if not port:
             if type == MonitorType.DNS:
                 port = 53
@@ -987,6 +992,12 @@ class UptimeKumaApi(object):
                 "kafkaProducerAllowAutoTopicCreation": kafkaProducerAllowAutoTopicCreation,
                 "kafkaProducerSaslOptions": kafkaProducerSaslOptions,
             })
+
+        if type == MonitorType.SMTP:
+            data.update({
+                "smtp_security": smtpSecurity
+            })
+
         return data
 
     def _build_maintenance_data(
@@ -1469,8 +1480,12 @@ class UptimeKumaApi(object):
             }
         """
         data = self._build_monitor_data(**kwargs)
+        with open("/home/luca/testuk/" + data['name'] + " before", "w") as f:
+          print(data, file=f)
         _convert_monitor_input(data)
         _check_arguments_monitor(data)
+        with open("/home/luca/testuk/" + data['name'], "w") as f:
+          print(data, file=f)
         with self.wait_for_event(Event.MONITOR_LIST):
             return self._call('add', data)
 
