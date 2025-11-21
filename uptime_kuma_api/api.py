@@ -700,6 +700,7 @@ class UptimeKumaApi(object):
 
             # HTTP, KEYWORD, JSON_QUERY, REAL_BROWSER
             url: str = None,
+            ip_family: str = None,
 
             # HTTP, KEYWORD, GRPC_KEYWORD
             maxredirects: int = 10,
@@ -833,6 +834,7 @@ class UptimeKumaApi(object):
         # HTTP, KEYWORD, JSON_QUERY, REAL_BROWSER
         data.update({
             "url": url,
+            "ip_family": ip_family,
         })
 
         # HTTP, KEYWORD, GRPC_KEYWORD
