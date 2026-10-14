@@ -1484,6 +1484,8 @@ class UptimeKumaApi(object):
         data = self._build_monitor_data(**kwargs)
         _convert_monitor_input(data)
         _check_arguments_monitor(data)
+        if 'conditions' not in data:
+            data['conditions'] = []
         with self.wait_for_event(Event.MONITOR_LIST):
             return self._call('add', data)
 
